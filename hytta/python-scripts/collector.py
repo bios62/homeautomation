@@ -7,6 +7,8 @@ import sqlite3
 import json
 import platform
 import urllib.parse
+from datetime import datetime
+import zoneinfo 
 from sqlite3 import Error
 from tplib import *
 
@@ -415,6 +417,7 @@ def main():
         room_stat.append({"roomname":room,KEY_TEMP:stats[KEY_TEMP_STATS][room][KEY_TEMP],KEY_TIME:stats[KEY_TEMP_STATS][room][KEY_TIME]})
     print(room_stat)
     jStats[KEY_SITENAME] = "hytta"
+    jStats[KEY_TIME_CREATED] = datetime.now(zoneinfo.ZoneInfo("Europe/Oslo")).strftime("%Y-%d-%m %H:%M:%S") 
     jStats[KEY_TEMP] = room_stat
     jStats[KEY_IPADDRESSES] = stats[KEY_IP_STATS]
     jStats[KEY_TP_SOCKETS] = stats[KEY_TP_SOCKETS]
