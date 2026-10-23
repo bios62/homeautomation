@@ -351,3 +351,4 @@ Cron Jobs
 /home/pi/scripts/termostat.bash &gt;&gt;/home/pi/logs/tpstatus
 
 \#15,45 \* \* \* \* /home/pi/scripts/wee\_start.sh
+# homeautomation
