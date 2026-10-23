@@ -1,0 +1,6 @@
+4,14,24,34,44,54 * * * * /home/pi/scripts/savetemp.sh
+4,9,14,19,24,29,34,39,44,49,54,59 * * * * /home/pi/scripts/saveip.sh
+4,9,14,19,24,29,34,39,44,49,54,59 * * * * bash /home/pi/scripts/saveip.bash
+0 1 * * 0,2,4,6 /home/pi/scripts/cleanup.sh
+0 1  * * *  bash /home/pi/scripts/cleanuplogfiles.bash
+1,6,11,16,21,26,31,36,41,46,51,56 * * * * bash /home/pi/scripts/windspeed.bash

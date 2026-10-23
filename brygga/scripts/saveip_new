@@ -1,0 +1,5 @@
+IP=`curl -s   checkip.dyndns.org |  sed 's/<html><head><title>Current IP Check<\/title><\/head><body>Current IP Address: //' | sed 's/<\/body><\/html>//'`
+echo $IP
+curl -d '{"logname":"ipaddress_2","siteid":"brygga","logvalue":"'$IP'"}' -H 'Content-Type: application/json'  "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/iot/iotv1/iotstats/"
+
+

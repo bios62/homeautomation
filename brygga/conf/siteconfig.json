@@ -1,0 +1,15 @@
+{
+"logDirectory":"/u01/iot",
+"iotDirectory":"/u01/iot",
+"localtempfile":"/u01/iot/localtemp.json",
+"iotstatscloud":"mydb",
+"iotstatsURL":"https://myatp_mydb.adb.eu-frankfurt-1.oraclecloudapps.com/ords/iot/iotv1/iotstats/",
+"getmyip1URL":"http://",
+"getmyip2URL":"http://",
+"debuglevel": 7,
+"iterations": 0,
+"serialport":"/dev/serial0",
+"deviation":"1",
+"post_interval":"30"
+}
+
