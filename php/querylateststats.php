@@ -13,12 +13,7 @@ $httpCode = 0;
 
 $queryUrl = $sodaUrl . "?action=query&limit=1&fields=all";
 $queryBody = <<<'JSON'
-{
-  "$query": {},
-  "$orderby": {
-    "created_on": -1
-  }
-}
+{"$query":{"creationtime":{"$exists":true}},"$orderby":{"creationtime":-1}}
 JSON;
 
 $curl = curl_init();

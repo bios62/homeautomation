@@ -8,7 +8,8 @@
 - SODA PHP pages load `SODAusername`, `SODApassword`, and `sodaURL` from a
   sibling `site.inc` and authenticate to OCI SODA with HTTP Basic Auth.
 - IoT stats pages use the existing server-side access-key form gate before
-  requesting SODA data.
+  requesting SODA data; `php/getstatsV3.php` loads `$accessKey` from the
+  sibling `site.inc`.
 - Production SODA PHP pages load credentials from `site.inc`; standalone test
   utilities may hardcode test configuration only when explicitly requested.
 - The standalone Hytta SODA test script uses the shared constants in

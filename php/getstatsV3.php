@@ -9,7 +9,7 @@ if (is_file(__DIR__ . "/site.inc")) {
 
 $defaultSiteName = "hytta";
 $defaultSites = array("hytta", "brygga");
-$accessKey = "Scarab38#";
+
 $keyValue = "";
 $selectedSite = $defaultSiteName;
 $customSite = "";
@@ -84,51 +84,45 @@ if ($submitted) {
     ) {
         $errorMessage = "missing config";
     } else {
-        $query = http_build_query(
-            array(
-                "fields" => "all",
-                "limit" => 1,
-                "sitename" => $siteName,
-            ),
-            "",
-            "&",
-            PHP_QUERY_RFC3986
-        );
-        $separator = strpos($sodaURL, "?") !== false ? "&" : "?";
-        $apiUrl = $sodaURL . $separator . $query;
 
-        $curl = curl_init();
+        $apiUrl = $sodaURL . "?action=query&limit=1&fields=all";
+
         // 2. Define QBE-payload for sorting
-        $jsonPayload = '{
-                "$query": {},
-                "$orderby": {
-                "created_on": -1
-                }
-        }';
-        #$jsonPayload = json_encode($payload);   
+        $queryBody = <<<'JSON'
+        {"$query":{"creationtime":{"$exists":true}},"$orderby":{"creationtime":-1}}
+        JSON;  
+ 
+        $curl = curl_init();
         curl_setopt_array(
             $curl,
             array(
                 CURLOPT_URL => $apiUrl,
+                CURLOPT_POST => true,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => $queryBody,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_MAXREDIRS => 5,
+                CURLOPT_FRESH_CONNECT => true,
+                CURLOPT_FORBID_REUSE => true,
                 CURLOPT_CONNECTTIMEOUT => 10,
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
                 CURLOPT_USERPWD => $SODAusername . ":" . $SODApassword,
-                CURLOPT_HTTPHEADER => array('Content-Type: application/json',"Accept: application/json"),
-                CURLOPT_USERAGENT => "ha-hytta-getstatsV3",
-                CURLOPT_POST => true,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POSTFIELDS => $jsonPayload,
-                
+                CURLOPT_HTTPHEADER => array(
+                    "Accept: application/json",
+                    "Content-Type: application/json",
+                    "Cache-Control: no-cache, no-store, max-age=0",
+                    "Pragma: no-cache",
+                ),
+                CURLOPT_USERAGENT => "ha-hytta-querylateststats",
             )
         );
+
+
         $apiResponse = curl_exec($curl);
         $curlError = curl_error($curl);
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
+
 
         if ($apiResponse === false || $curlError !== "") {
             $errorMessage = "SODA request failed: " . $curlError;
@@ -365,11 +359,28 @@ $ipAddresses = $recordValue["ipaddresses"] ?? array();
 
             <h2>Record</h2>
             <div class="table-wrap"><table><tbody>
-                <?php renderKeyValueRows(array(
-                    "id" => $latestRecord["id"] ?? "",
-                    "created" => $latestRecord["created"] ?? "",
-                    "lastModified" => $latestRecord["lastModified"] ?? "",
-                )); ?>
+                <?php 
+                    #
+                    # Autonomous returns in UTC format, change to Norwegian TZ and format
+                    #
+                    $norwegian_timezone= new DateTimeZone('Europe/Oslo');
+                    $created_date = new DateTimeImmutable($latestRecord["created"]);
+                    $lastModified = new DateTimeImmutable($latestRecord["lastModified"]);
+                    $created_no = $created_date->setTimezone($norwegian_timezone);
+                    $last_no = $lastModified->setTimezone($norwegian_timezone);
+                    $created = $created_no->format('d/m-Y H:i:s');
+                    $lastModified = $last_no->format('d/m-Y H:i:s');
+
+                    #renderKeyValueRows(array(
+                    #"id" => $latestRecord["id"] ?? "",
+                    #"created" => $latestRecord["created"] ?? "",
+                    #"lastModified" => $latestRecord["lastModified"] ?? "",
+                    renderKeyValueRows(array(
+                        "id" => $latestRecord["id"] ?? "",
+                        "created" => $created ?? "",
+                        "lastModified" => $lastModified ?? "",
+                    )); 
+                ?>
             </tbody></table></div>
 
             <?php if (is_array($temperatures) && count($temperatures) > 0) { ?>

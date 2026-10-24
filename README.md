@@ -47,9 +47,30 @@ this repository, the equivalent source is under `<site>/scripts`, for example
 
 ## Changelog
 
+25/10-26: added `creationtime` to the `collector.py` payload for SODA queries;
+added `php/getstatsV3.php` to query the latest stats through SODA using
+`$accessKey` from `site.inc`.
+
 31/7-26: reorganized configuration, Python, and shell sources by site
 
 2/1-24: removed py2 requirement
+
+## Get stats from SODA
+
+`hytta/python-scripts/collector.py` adds a `creationtime` field to the JSON
+payload so the SODA API can query and sort on that field.
+
+The new stats page, `php/getstatsV3.php`, sends a POST request to the SODA
+collection endpoint with `?action=query` and the following JSON query:
+
+```json
+{"$query":{"creationtime":{"$exists":true}},"$orderby":{"creationtime":-1}}
+```
+
+The query selects documents containing `creationtime` and sorts them newest
+first. The page uses `limit=1&fields=all` to retrieve the latest stats document.
+Access to the page is checked against `$accessKey` loaded from the sibling
+`site.inc` file.
 
 ## Connections
 
