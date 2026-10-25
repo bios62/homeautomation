@@ -1,0 +1,151 @@
+{
+  "groups": [
+    {
+      "groupid": 5,
+      "groupname": "GangWeewx",
+      "inuse": "Y",
+      "sensortype": "weewx",
+      "sensorconfig": "weewxfile",
+      "usetermostat": "N",
+      "lowtemp": 5,
+      "hightemp": 20,
+      "backupsensor": null,
+      "members": []
+    },
+    {
+      "groupid": 6,
+      "groupname": "Stue Sensor",
+      "inuse": "N",
+      "sensortype": null,
+      "sensorconfig": null,
+      "usetermostat": "N",
+      "lowtemp": 0,
+      "hightemp": 0,
+      "backupsensor": null,
+      "members": []
+    },
+    {
+      "groupid": 1,
+      "groupname": "Stue",
+      "inuse": "Y",
+      "sensortype": "json",
+      "sensorconfig": "remotetempfile",
+      "usetermostat": "Y",
+      "lowtemp": 5,
+      "hightemp": 20,
+      "backupsensor": 4,
+      "members": [
+        "hytte_stue1",
+        "hytte_stue2"
+      ]
+    },
+    {
+      "groupid": 2,
+      "groupname": "Stue Ekstra",
+      "inuse": "N",
+      "sensortype": "1",
+      "sensorconfig": null,
+      "usetermostat": "S",
+      "lowtemp": 5,
+      "hightemp": 20,
+      "backupsensor": null,
+      "members": [
+        "hytte_stue3"
+      ]
+    },
+    {
+      "groupid": 3,
+      "groupname": "Gang",
+      "inuse": "Y",
+      "sensortype": "json",
+      "sensorconfig": "localtempfile",
+      "usetermostat": "Y",
+      "lowtemp": 5,
+      "hightemp": 19,
+      "backupsensor": 5,
+      "members": [
+        "hytte_gang"
+      ]
+    },
+    {
+      "groupid": 4,
+      "groupname": "Soverom",
+      "inuse": "Y",
+      "sensortype": null,
+      "sensorconfig": null,
+      "usetermostat": "N",
+      "lowtemp": 5,
+      "hightemp": 20,
+      "backupsensor": null,
+      "members": [
+        "hytte_sov1",
+        "hytte_sov2",
+        "hytte_sov3",
+        "hytte_sov4"
+      ]
+    }
+  ],
+  "siteConfig": {
+    "desiredtempfile": "/u01/iot/desiredtemp.json",
+    "elPriceArea": "NO2",
+    "elPriceFile": "/u01/iot/elprices.json",
+    "elPriceURL": "https://www.hvakosterstrommen.no/api/v1/prices/",
+    "getmyip1URL": "https://api.ipify.org?format=json",
+    "getmyip2URL": "http://ip-api.com/json/",
+    "groupConfigFile": "/u01/iot/groupconfig.json",
+    "groupConfigURL": "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/iot/iotv1/groupconfig/",
+    "iotDirectory": "/u01/iot",
+    "iotstatscloud": "iosp",
+    "iotstatsURL": "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/iot/iotv1/iotstats/",
+    "localtempfile": "/u01/iot/localtemp.json",
+    "logDirectory": "/u01/iot",
+    "maxAgeInHours": "2",
+    "membersURL": "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/iot/iotv1/members/",
+    "remotetempfile": "/u01/iot/remotetemp.json",
+    "sensorconfig": "/home/pi/conf/sensorconfig.json",
+    "sensordatabase": "/u01/iot/sensordb.json",
+    "sensortags": [
+      "celcius",
+      "mC",
+      "currenttemp"
+    ],
+    "siteid": "hytta",
+    "socketConfigFile": "/u01/iot/tpsockets",
+    "sodapwd": "Mercedes450sl",
+    "sodaURL": "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/iot/soda/latest/jiotlogs",
+    "sodauser": "iot",
+    "tempSettingURL": "https://tn1tv18ynzxubz5-iosp.adb.eu-frankfurt-1.oraclecloudapps.com/ords/iot/iotv1/currentsetting/",
+    "use_sensordb": "false",
+    "weewxfile": "/u01/iot/weewk.sdb"
+  },
+  "tpSockets": [
+    {
+      "socketname": "hytte_stue2",
+      "ip": "192.168.0.132"
+    },
+    {
+      "socketname": "hytte_stue3",
+      "ip": "192.168.0.133"
+    },
+    {
+      "socketname": "hytte_gang",
+      "ip": "192.168.0.134"
+    },
+    {
+      "socketname": "hytte_sov1",
+      "ip": "192.168.0.141"
+    },
+    {
+      "socketname": "hytte_sov2",
+      "ip": "192.168.0.142"
+    },
+    {
+      "socketname": "hytte_sov3",
+      "ip": "192.168.0.143"
+    },
+    {
+      "socketname": "hytte_sov4",
+      "ip": "192.168.0.144"
+    }
+  ]
+}

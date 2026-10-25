@@ -298,7 +298,7 @@ def termostat(allConfig, desiredTemp):
     #
     # If sensor db is used read all temp prior to processing
     #
-    if allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB] is None or allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB].lower() != 'true':
+    if allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB].lower() == 'true':
         all_temp=get_all_sensordb(allConfig[KEY_SITE_CONFIG])
                   
 
@@ -354,7 +354,7 @@ def termostat(allConfig, desiredTemp):
                 # Use the "old" style if USE_SENSORDB is not set to True
                 #
                 
-                if allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB] is None or allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB].lower() != 'true':
+                if allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB].lower() != 'true':
                     #
                     # Find current temp for the group
                     #
@@ -607,7 +607,7 @@ def main():
     if not allConfig:
         print("Error Loading confguration")
         return 1
-    if allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB].lower != 'false':
+    if allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB].lower == 'true':
         print('Configuration loaded, using sensordb')
     else:
         print('Configuration loaded, using classic temp')

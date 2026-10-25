@@ -370,7 +370,7 @@ def get_all_sensordb(site_config):
         with open(site_config[KEY_SENSORDB],"r") as sensordb:
             sensor_values=json.loads(sensordb.read())
     except Exception as e:
-        print(f'Error when open sensor databasefile: {site_config[KEY_SENSORCONFIG]}')
+        print(f'Error when open sensor databasefile: {site_config[KEY_SENSORDB]}')
         print(e)
         return(False)
     #

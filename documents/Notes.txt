@@ -1,0 +1,7 @@
+Notes:
+
+
+KEY_SENSORCONFIG is ambigtious, add KEY_SENSORFILE
+termostat: line 377 and on,needs to be changed
+Add new funtions to common
+rewrite collector to take sensordb into account
