@@ -1,0 +1,5 @@
+[
+{"groupname":"gang","backup":"stue","members":[{"name":"ds1820-gang","priority":"1","scale":1},{"name":"weewx","priority":"3","scale":1},{"name":"ESP32_BAD","priority":"2","scale":1000}]},
+{"groupname":"stue","backup":"gang","members":[{"name":"ds1820-stue","priority":"1","scale":1},{"name":"temp-stue","priority":"2","scale":1000}]}
+]
+

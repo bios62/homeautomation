@@ -138,6 +138,100 @@ def sensorSave(config, sensorvalues, logger):
         return -3
     return True
 
+#
+# 10/11-26, redesign of storage format
+# Example of new format:
+#
+#  
+# Function that updates the file with current temperture from a given sensor
+#
+#  Required input structure
+#  {"objecttag":"ESP32_BAD","sensors" :[{"sensorvalue": "11504", "sensortag": "mC"}, 
+# {"sensorvalue": "41.4446", "sensortag": "Humidity"}]}
+#
+#  Lookup apiserverconstants for correct names in structure
+#
+#  Required file structure: (Modified 10/11-26)
+#
+#   JSON Array with sensor values
+#   [
+#    {"ds1820-gang": { "temp":"12.187","timestamp": "02.11.2026 22:45:05"}},
+#    {"temp-stue": { "mctemp":"18305","Humidity":"40.2848","timestamp": "02.11.2026 22:45:05"}},
+#    {"ds1820-stue":{"temp":"16.94","timestamp": "02.11.2026 22:45:05"}},
+#    {"ESP32_BAD": {"mctemp":"13146","Humidity":"52.5701","timestamp": "02.11.2026 22:45:36"}}
+#.  ]
+def sensorSaveV2(config, sensorvalues, logger):
+    #
+    # Fetch the current sensordb
+    #
+    sensorDB = get_sensor_db(config, logger)
+    if sensorDB is None:
+        return None
+    elif sensorDB == -1:  # Fiel does not exist create new
+        sensorDB=[]
+    #
+    # Verify that the alltemp structure is an array
+    #
+    if not isinstance(sensorDB, list):
+        logger.error("SensorDb has incorrect JSON structure")
+        return -2
+    #
+    # Build json structure
+    # And replace old structure
+    # As current values are the only that is of interest
+    #
+    # New version for new format
+    #
+    key_names = {
+        "mC": "mctemp",
+        "Temp": "temp",
+        "Celsius": "temp",
+        "Humidity":"Humidity",
+    }
+    # 
+    # First flatten the structure to match sensorDB
+    new_sensor_gauges = {}
+    for sensor in sensorvalues["sensors"]:
+        if "sensortag" in sensor:
+            tag = sensor["sensortag"]
+            new_sensor_gauges[key_names.get(tag, tag)] = sensor["sensorvalue"]
+
+        if "timestamp" in sensor:
+            new_sensor_gauges["timestamp"] = sensor["timestamp"]
+        else:
+            new_sensor_gauges["timestamp"] = get_NPT_time(config, logging)
+
+    #
+    # Update sensordb
+    #
+    # iterate over sensordb and find sensorname
+
+    found=False
+    for item in sensorDB:
+        if sensorvalues[SENSOR_NAME] in item:
+            item[sensorvalues[SENSOR_NAME]] = new_sensor_gauges
+            found = True
+            break
+    if found is False:
+        sensorDB.append({sensorvalues[SENSOR_NAME]:new_sensor_gauges})
+    #
+    # check for sensor temp, two values are allowed
+    #
+
+    #
+    # Save current values
+    #
+    try:
+        current_sensor_file = open(config[SENSORDB_FILENAME], "w")
+        current_sensor_file.write(json.dumps(sensorDB, indent=2))
+        current_sensor_file.close()
+    except Exception as e:
+        logger.error(
+            "General I/O Error writing sensorfile: " + filename
+        )
+        logger.error(traceback.format_exc())
+        return -3
+    return True
 
 #########################################################
 #
@@ -170,7 +264,7 @@ def get_sensor_db(config, logger):
         #
         logger.error(fnfe)
         logger.error(traceback.format_exc())
-        return None
+        return -1
     except Exception as e:  # Catch any other I/O error
         logger.error("General Error reading sensorfile: " + filename)
         logger.error(traceback.format_exc())
@@ -189,8 +283,20 @@ def main():
     config = {}
     config[SERVER_NTP_SERVER] = "time.google.com"
     config[SERVER_TIME_ZONE] = "Europe/Oslo"
-    config[SERVER_TIME_FORMAT] = "%h:%m:%s"
-    print(get_NPT_time(config, None))
+    config[SERVER_TIME_FORMAT] = "%d.%m.%Y %H:%M:%S"
+    logging.basicConfig(
+                filename='/Users/ingeos/projects/homeautomation/temp/apilog',
+                filemode="w",
+                format="%(name)s → %(levelname)s: %(message)s",
+            )
+    testpost=[]
+    testpost.append('{"objecttag":"ESP32_BAD","sensors" :[{"sensorvalue": "12504", "sensortag": "mC"}, {"sensorvalue": "41.4446", "sensortag": "Humidity"}]}')
+    testpost.append('{"objecttag":"test2","sensors" :[{"sensorvalue": "11504", "sensortag": "temp"}]}')
+    testpost.append('{"objecttag":"test3","sensors" :[{"sensorvalue": "15.04", "sensortag": "temp"}]}')
+    testpost.append('{"objecttag":"test3","sensors" :[{"sensorvalue": "17.04", "sensortag": "Celsius"},{"timestamp": "02.11.2026 22:45:05"}]}')
+    config[SENSORDB_FILENAME]='/Users/ingeos/projects/homeautomation/temp/newsensordb'
+    for i in range(0,4):
+        sensorSaveV2(config, json.loads(testpost[i]), logging)
 
 
 if __name__ == "__main__":

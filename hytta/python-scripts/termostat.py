@@ -299,7 +299,8 @@ def termostat(allConfig, desiredTemp):
     # If sensor db is used read all temp prior to processing
     #
     if allConfig[KEY_SITE_CONFIG][KEY_USE_SENSORDB].lower() == 'true':
-        all_temp=get_all_sensordb(allConfig[KEY_SITE_CONFIG])
+        # all_temp=get_all_sensordb(allConfig[KEY_SITE_CONFIG])
+        all_temp=get_temp_from_sensordb(allConfig[KEY_SITE_CONFIG], getAll=True)
                   
 
     for member in list(allConfig[KEY_GROUPS]):

@@ -86,7 +86,7 @@ def parse_config_file(filename, logging):
     #
     #  Add sensor funtion
     #
-    api_server_config[SENSOR_FUNCTION] = sensorSave
+    api_server_config[SENSOR_FUNCTION] = sensorSaveV2
     #
     # Iterate over config and add nonmandatory parameters
     #

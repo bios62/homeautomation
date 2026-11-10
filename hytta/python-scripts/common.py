@@ -93,7 +93,7 @@ KEY_LOG_DIRECTORY       = "logDirectory"
 KEY_MAX_AGE             = "maxAgeInHours"
 KEY_MEMBERS_URL         = "membersURL"
 KEY_REMOTE_TEMP_FILE    = "remotetempfile"
-KEY_SENSORCONFIG        = "sensorconfig"
+KEY_SENSORCONFIG_FILE   = "sensorconfigfile"
 KEY_SENSORDB            = "sensordatabase"
 KEY_SENSORTAGS          = "sensortags"
 KEY_SITEID              = "siteid"
@@ -125,7 +125,7 @@ param_list = [
     KEY_MAX_AGE,
     KEY_MEMBERS_URL,
     KEY_REMOTE_TEMP_FILE,
-    KEY_SENSORCONFIG,
+    KEY_SENSORCONFIG_FILE,
     KEY_SENSORDB,
     KEY_SENSORTAGS,
     KEY_SITEID,
@@ -350,17 +350,17 @@ def create_connection(db_file):
 # If no valid reading is available, the backup temperature is fetched.
 # In case no valid temp is available, it returns false for the group
 #
-def get_all_sensordb(site_config):
+def get_all_sensordb_NLU(site_config):   # Replaced by get_temp_from_sensordb
     #
     # Open files in a robust way
     #
     # Open and get config data from sensor_config file
     #
     try:
-        with open(site_config[KEY_SENSORCONFIG],"r") as sensor_file:
+        with open(site_config[KEY_SENSORCONFIG_FILE],"r") as sensor_file:
             sensor_config=json.loads(sensor_file.read())
     except Exception as e:
-        print(f'Error when open sensorconfig file: {site_config[KEY_SENSORCONFIG]}')
+        print(f'Error when open sensorconfig file: {site_config[KEY_SENSORCONFIG_FILE]}')
         print(e)
         return(False)
     #
@@ -717,7 +717,7 @@ def get_group_temperatures_sensordb(site_config, sensor_config, sensordb):
                 # stop looking at lower priority sensors for this group.
                 # When found both temp value and valid time, add entry and skip to next group
                 if time_within_limit and temp_found:
-                    results[group_name]={KEY_TEMP:current_finding,KEY_TIMESTAMP:timestamp,KEY_TIMESTAMP:sensor_name}
+                    results[group_name]={KEY_TEMP:current_finding,KEY_TIMESTAMP:timestamp,KEY_SENSORTAG:sensor_name}
                     break
                 if not (time_within_limit and temp_found):
                     results[group_name]={KEY_TEMP:None}
@@ -752,7 +752,7 @@ def get_temp_from_sensordb(site_config, getAll=False):
 
     try:
             # Open and parse Config File
-        with open(site_config[KEY_SENSORCONFIG], 'r') as f_config:
+        with open(site_config[KEY_SENSORCONFIG_FILE], 'r') as f_config:
             sensor_config = json.load(f_config) 
 
         # Open and parse Sensor DB File
@@ -769,7 +769,7 @@ def get_temp_from_sensordb(site_config, getAll=False):
     if getAll:
         return get_all_temperatures(sensordb_data)
     else:
-        max_age_int=int(site_config[KEY_MAX_AGE])
+         # max_age_int=int(site_config[KEY_MAX_AGE]) prosessed in funtion below
         return get_group_temperatures_sensordb(site_config,sensor_config,sensordb_data)
     
 

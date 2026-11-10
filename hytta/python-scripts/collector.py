@@ -177,32 +177,36 @@ def collect(all_config):
     #
     # Globals
     #
-    #  Indor temp from DS1820, gang
+    # Dependent on the value of KEY_USE_SENSORDB
+    # The temp colelction takes two paths
     #
     #
     temp_stats = {}
     stats={}
 
-    for member in list(all_config[KEY_GROUPS]):
-        if member[KEY_INUSE] == "Y":
-            print_debug("processing temp group: " + member[KEY_GROUPNAME], DBG64)
-            currentTemp = get_temp_for_group(
-                all_config[KEY_SITE_CONFIG],
-                member
-            )
-            if not (currentTemp == False):
-                temp_stats[member[KEY_GROUPNAME]] = currentTemp
-                print_debug(
-                    "Group: "
-                    + member[KEY_GROUPNAME]
-                    + json.dumps(temp_stats[member[KEY_GROUPNAME]]),
-                    DBG64,
+    if all_config[KEY_USE_SENSORDB:
+        for member in list(all_config[KEY_GROUPS]):
+            if member[KEY_INUSE] == "Y":
+                print_debug("processing temp group: " + member[KEY_GROUPNAME], DBG64)
+                currentTemp = get_temp_for_group(
+                    all_config[KEY_SITE_CONFIG],
+                    member
                 )
-            else:
-                dummyTemp = {KEY_TEMP: "-255", KEY_TIME: "01/01/1970, 00:00:00"}
-                temp_stats[member[KEY_GROUPNAME]] = dummyTemp
-                print_debug("Group: " + member[KEY_GROUPNAME] + " temp is False", DBG64)
-    stats[KEY_TEMP_STATS] = temp_stats
+                if not (currentTemp == False):
+                    temp_stats[member[KEY_GROUPNAME]] = currentTemp
+                    print_debug(
+                        "Group: "
+                        + member[KEY_GROUPNAME]
+                        + json.dumps(temp_stats[member[KEY_GROUPNAME]]),
+                        DBG64,
+                    )
+                else:
+                    dummyTemp = {KEY_TEMP: "-255", KEY_TIME: "01/01/1970, 00:00:00"}
+                    temp_stats[member[KEY_GROUPNAME]] = dummyTemp
+                    print_debug("Group: " + member[KEY_GROUPNAME] + " temp is False", DBG64)
+        stats[KEY_TEMP_STATS] = temp_stats
+    else:
+    
     #
     # Collect socket status
     #

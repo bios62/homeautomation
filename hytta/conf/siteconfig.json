@@ -28,6 +28,6 @@
 "weewxtargetpwd":"targetpwd",
 "weewxhtmlroot":"/u01/iot/public_html",
 "pythonvenvdir":"/py39",
-"sensorconfig":"/home/pi/conf/sensorconfig.json"
+"sensorconfigfile":"/home/pi/conf/sensorconfig.json"
 }
 

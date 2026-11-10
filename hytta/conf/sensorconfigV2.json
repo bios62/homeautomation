@@ -1,4 +1,9 @@
-[
-{"groupname":"gang","members":[{"name":"ds1820-gang","priority":"1","scale":1},{"name":"weewx","priority":"3","scale":1},{"name":"ESP32_BAD","priority":"2","scale":1000}]},
-{"groupname":"stue","members":[{"name":"temp-stue","priority":"1","scale":1000},{"name":"arduino-stue","priority":"2","scale":1000}]}
-]
+{"sensors": 
+    [
+            {"name":"temp-stue","groupid": 1,"priority":"4","scale":1000,"type":"sensordb"},
+            {"name":"ds1820-stue","groupid": 1,"priority":"3","scale":1,"type":"sensordb"},
+            {"name":"ESP32_BAD","groupid": 3,"priority":"2","scale":1000,"type":"sensordb"},
+            {"name":"ds1820-gang","groupid": 3,"priority":"1","scale":1,"type":"sensordb"},
+            {"name":"Weewx","groupid": 3,"priority":"3","scale":1,"type":"sensordb"}
+    ]
+}

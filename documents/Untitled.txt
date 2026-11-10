@@ -1,0 +1,32 @@
+New policy
+
+define tenancy boat as ocid1.tenancy.oc1..aaaaaaaagkbzgg6lpzrf47xzy4rjoxg4de6ncfiq2rncmjiujvy2hjgxvziq
+define group nordic_ace_tenancy_BOAT_group as ocid1.group.oc1..aaaaaaaanmblzcw32k33tainmwq2odnjfa7rt2ghxmlfvbbbzjdjk62bp3ba
+admit group nordic_ace_tenancy_BOAT_group of tenancy boat to ...fill in the rest of the policy.
+
+
+Old policy
+
+define tenancy boat as ocid1.tenancy.oc1..aaaaaaaagkbzgg6lpzrf47xzy4rjoxg4de6ncfiq2rncmjiujvy2hjgxvziq
+define group ACE_DK_BOAT_group as ocid1.group.oc1..aaaaaaaal4mjlgarsb7so7qwvfzra74ibgt5znkrehwfztvltu6ohpd4qe4q
+admit group ACE_DK_BOAT_group of tenancy boat to {PHONEBOOK_SERVICE_CREATE, PHONEBOOK_SERVICE_UPDATE, PHONEBOOK_SERVICE_DELETE} in compartment PhonebookService_Compartment
+
+Mahesh thiagarajan key note Powering the next era of enterprise AI
+
+CAQG68T79HD
+
+1. Is the underlying PostgreSQL VM private to each customer?
+2. Does Oracle have SSH access to those VMs?
+3. After logging in, could an operator run SQL against customer data using a command-line tool?
+
+Access to LLM
+
+Gemini Pro
+Gemini FLash
+Grok 4.20 Mult agent
+Grok 4.7
+
+ingeosoracle.onmicrosoft.com
+
+I dag:  AD, Exhange, DB 
+
